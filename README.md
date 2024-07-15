@@ -10,9 +10,27 @@ This guide outlines the steps to create a custom HTTP device discovery handler i
 - Helm 3
 - AKRI installed on your cluster
 
+## Scenario
+
+### HTTP Device to Broker Scenario
+
+Below is an example of an HTTP device discovery handler and custom broker using Akri. Akri discovers the HTTP-based devices, advertises them as resources, and automatically deploys workloads to utilize those devices. Data from the devices can then be processed or analyzed by the broker or pushed to an MQTT topic for further processing.
+
+<p align="center">
+  <img src="./assets/http-generic-broker.png" alt="Akri HTTP discovery handler and custom broker">
+</p>
+
+1. Provide discovery handler discovery details in the Broker config.
+2. The Discovery handler is provided a list of HTTP device endpoints or sends a request to the HTTP device gateway for a list of devices.
+3. The Discovery Handler returns a list of discoverable devices for response.
+4. If the request is accepted, deploy a broker pod instance using the defined broker image. (The discovered device endpoint, MQTT publish endpoint(s), and topics are passed in the broker config properties).
+5. The broker sends a request to the device endpoint to get data from the device.
+6. The broker publishes the data to a topic. If a fail condition occurs, publish to an error topic.
+7. Alerts are sent to Azure Event Grid.
+
 ## Overview of Creating a Custom Discovery Handler
 
-Creating a custom discovery handler involves several key steps:
+Creating a custom discovery  handler involves several key steps:
 
 1. **Designing the Discovery Logic**: Determine how your handler will discover devices. This involves defining the criteria and method for identifying available HTTP-based devices in your network.
 
