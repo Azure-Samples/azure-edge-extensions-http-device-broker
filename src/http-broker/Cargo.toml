@@ -1,0 +1,19 @@
+[package]
+name = "dcam-sse-broker"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+tokio = { version = "1", features = ["full"] }
+warp = "0.3.1"
+serde_json = "1.0.73"
+tokio-rustls = { version = "0.25.0"}
+rumqttc = "0.24.0"
+rustls-native-certs = { version = "0.7.0"}
+chrono = { version = "0.4", features = ["serde"] }
+jsonschema = "0.12"
+bytes = "1.0"
+hyper = { version = "0.14", features = ["full"] }
+lazy_static = "1.4.0"
+tokio-retry = "0.3"

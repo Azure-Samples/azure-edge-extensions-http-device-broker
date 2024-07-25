@@ -57,6 +57,28 @@ Creating a custom discovery  handler involves several key steps:
 |http.configuration.discoveryDetails.devices[].discoveryUrls|array of DiscoveryURLs|["http://localhost:4840/"]|Endpoints that are the status URLs to check to see if the device is up
 |http.configuration.discoveryDetails.devices[].deviceIds|array of Device Identifiers|["http-device-001"]|A unique identifier for the http device
 
+### Quick Start
+
+1. Download the repo to your local dev machine.
+
+  ```bash
+  git clone <repo url>
+  ```
+
+2. Prepare environment variables, adapt the following and run in your bash terminal:
+
+  ```bash
+  export ACR_NAME="<update this>" # Existing Azure Container registry
+
+# Build the discovery handler
+```bash
+cd src/http-discovery-handler
+docker build -t http-discovery-handler .
+
+# Tag and push the image to the ACR
+docker tag http-discovery-handler $ACR_NAME.azurecr.io/http-discovery-handler
+docker push $ACR_NAME.azurecr.io/http-discovery-handler
+```
 
 ## Adding a Device
 
@@ -77,6 +99,13 @@ httpDevices:
 ## Removing a Device
 
 To remove a device, simply delete its entry from `httpDevices` in the AKRI configuration.
+
+
+Check that the http discovery pod is up and in 'Running' status.
+
+```bash
+kubectl get pods -A | grep akri
+```
 
 ## Configuring AKRI to Use the Discovery Handler
 
