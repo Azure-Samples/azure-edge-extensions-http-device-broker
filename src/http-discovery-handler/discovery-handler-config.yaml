@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: akri-http-discovery-daemonset
+spec:
+  template:
+    spec:
+      containers:
+      - name: akri-http-discovery
+        image: {ACR_NAME}.azurecr.io/http-discovery-handler:latest
+        env:
+        - name: MQ_ENDPOINT
+          value: "aio-mq-dmqtt-frontend"
+        - name: MQ_PORT
+          value: "8883"
+        - name: MQ_ERROR_TOPIC
+          value: "<error-topic>"
+        - name: SSL_CERT_FILE
+          value: "/var/run/certs/ca.crt"
+        - name: MQ_SAT_TOKEN
+          value: "/var/run/secrets/tokens/mq-sat"
+        volumeMounts:
+        - name: mq-sat
+          mountPath: /var/run/secrets/tokens
+        - name: trust-bundle
+          mountPath: /var/run/certs
+      volumes:
+      - name: mq-sat
+        projected:
+          sources:
+          - serviceAccountToken:
+              path: mq-sat
+              audience: aio-mq # Must match audience in BrokerAuthentication
+              expirationSeconds: 86400
+      - name: trust-bundle
+        configMap:
+          name: aio-ca-trust-bundle-test-only # Default root CA cert
