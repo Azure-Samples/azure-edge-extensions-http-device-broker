@@ -4,6 +4,10 @@
 
 This guide outlines the steps to create a custom HTTP device discovery handler in AKRI. AKRI simplifies the process of exposing IoT devices as resources in a Kubernetes cluster. This custom handler will enable the discovery of HTTP-based device sensors.
 
+> [!WARNING]  
+> This Azure Edge Extensions has confirmed compatiblity with the 0.5.0 preview version of Azure IoT Operations. Please review
+> [AIO release notes](https://github.com/Azure/azure-iot-operations/releases) for current preview version releases.
+
 ## Prerequisites
 
 - A Kubernetes cluster
