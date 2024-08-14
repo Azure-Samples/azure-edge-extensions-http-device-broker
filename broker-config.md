@@ -196,8 +196,18 @@ If there are additional configuration files in the repository, describe their pu
 ## Step-by-Step Configuration Guide
 
 1. Ensure all prerequisites are met.
-2. If providing a [JSON Schema](generic-http-broker-design.md#json-schema-example) for validation, please include it in the `/infra/akri/deploy/` folder.
-3. Refer to the steps for [Applying the Configuration](managing-http-devices.md#applying-the-configuration)
+2. If providing a [JSON Schema](#json-schema-example) for validation, please include it in the `/infra/akri/deploy/` folder.
+3. Refer to the steps for [Applying the Configuration](#applying-the-configuration)
+
+## Applying the Configuration
+
+After you've made changes to the AKRI configuration, you need to apply it for the changes to take effect. You can do this using the `kubectl apply` command.
+
+For example:
+
+```bash
+kubectl apply -f device-broker-config.yaml
+```
 
 ## Troubleshooting
 - If the sensors are not discovered, ensure that the discoveryHandler is correctly configured and that your sensors are compatible with the specified protocol.
