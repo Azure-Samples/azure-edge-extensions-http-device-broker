@@ -1,0 +1,10 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: akri-http-discovery-daemonset
+spec:
+  template:
+    spec:
+      containers:
+      - name: akri-http-discovery
+        image: replaceme.azurecr.io/http-discovery-handler:latest

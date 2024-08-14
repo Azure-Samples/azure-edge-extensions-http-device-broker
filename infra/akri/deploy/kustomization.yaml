@@ -1,0 +1,10 @@
+namespace: azure-iot-operations
+
+resources:
+- akri-config.yaml
+
+patches:
+- path: discovery-handler-config.yaml
+  target:
+    kind: DaemonSet
+    name: akri-http-discovery-daemonset

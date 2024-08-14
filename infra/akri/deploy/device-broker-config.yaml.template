@@ -1,24 +1,3 @@
-# HTTP Broker Configuration for AKRI
-
-## Introduction
-
-This guide provides detailed instructions on how to configure the http broker using AKRI. AKRI helps to expose IoT devices as resources in a Kubernetes cluster, and this configuration specifically focuses on integrating device sensors.
-
-## Prerequisites
-
-- A Kubernetes cluster
-- Helm 3
-- AKRI installed on your cluster
-
-## Configuration File Overview
-
-The `device-broker-config.yaml.template` file is a Kubernetes custom resource definition (CRD) that tells AKRI how to discover and use device sensors. This file includes several configuration options that can be customized according to your needs.
-
-## Configuration Options
-
-Below is an example of the template used to configure the http broker for the device sensor. You can change the values in the corresponding broker configuration for your specific environment.
-
-```yaml
 apiVersion: akri.sh/v0
 kind: Configuration
 metadata:
@@ -37,7 +16,7 @@ spec:
       serviceAccountName: mqtt-client
       containers:
       - name: akri-http-broker # name of the http broker
-        image: <container registry>/http-broker:latest # CHANGE TO YOUR CONTAINER REGISTRY
+        image: replaceme.azurecr.io/http-broker:latest # CHANGE TO YOUR CONTAINER REGISTRY
         env:
           - name: DATA_MQ_ENDPOINT
             value: "aio-mq-dmqtt-frontend"
@@ -172,58 +151,3 @@ spec:
     "extendedAddress": [ "streetAddress" ]
   }
 }
-```
-
-### Resources
-
-- **Resources**: Specified under `containers -> resources`, this section sets limits on the CPU and memory resources used by the pods in the cluster. It helps manage resource allocation and ensures that the broker does not consume more than the specified limits.
-
-### `instanceServiceSpec` and `configurationServiceSpec`
-
-- **`instanceServiceSpec`**: Defines the specifications for the service that exposes the instances of the discovered devices. It uses `ClusterIP` to make the service accessible within the cluster on a specified port.
-- **`configurationServiceSpec`**: Similar to `instanceServiceSpec`, it defines the specifications for the service that exposes the configuration interface. It also uses `ClusterIP` and makes the service accessible within the cluster on a specified port.
-
-### Capacity
-
-- **`capacity`**: This parameter under the main `spec` section defines the maximum number of nodes that can schedule workloads on a resource. It limits the number of instances to prevent overallocation of resources. 
-
-> **Tip:** When modifying the Configuration, do not remove the resource request and limit `{{PLACEHOLDER}}`. The Akri Controller inserts the request for the discovered device/Instance here.
-
-## Additional Configuration Files
-
-If there are additional configuration files in the repository, describe their purpose and usage here.
-
-## Step-by-Step Configuration Guide
-
-1. Ensure all prerequisites are met.
-2. If providing a [JSON Schema](#json-schema-example) for validation, please include it in the `/infra/akri/deploy/` folder.
-3. Refer to the steps for [Applying the Configuration](#applying-the-configuration)
-
-# Build the http broker
-```bash
-cd src/http-broker
-docker build -t http-broker .
-docker login $ACR_NAME.azurecr.io
-
-# Tag and push the image to the ACR
-docker tag http-broker $ACR_NAME.azurecr.io/http-broker
-docker push $ACR_NAME.azurecr.io/http-broker
-```
-
-## Applying the Configuration
-
-After you've made changes to the AKRI configuration, you need to apply it for the changes to take effect. You can do this using the `kubectl apply` command.
-
-For example:
-
-```bash
-cd infra/akri/deploy
-kubectl apply -f device-broker-config.yaml
-```
-
-## Troubleshooting
-- If the sensors are not discovered, ensure that the discoveryHandler is correctly configured and that your sensors are compatible with the specified protocol.
-
-## Further Resources
-- [AKRI Custom Broker Documentation](https://docs.akri.sh/development/broker-development)
-- [AIO MQTT Broker Documentation](https://learn.microsoft.com/en-us/azure/iot-operations/manage-mqtt-connectivity/overview-iot-mq)

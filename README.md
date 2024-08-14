@@ -73,11 +73,13 @@ Creating a custom discovery  handler involves several key steps:
 
   ```bash
   export ACR_NAME="<update this>" # Existing Azure Container registry
+  ```
 
 # Build the discovery handler
 ```bash
 cd src/http-discovery-handler
 docker build -t http-discovery-handler .
+docker login $ACR_NAME.azurecr.io
 
 # Tag and push the image to the ACR
 docker tag http-discovery-handler $ACR_NAME.azurecr.io/http-discovery-handler
@@ -104,7 +106,6 @@ httpDevices:
 
 To remove a device, simply delete its entry from `httpDevices` in the AKRI configuration.
 
-
 Check that the http discovery pod is up and in 'Running' status.
 
 ```bash
@@ -114,6 +115,20 @@ kubectl get pods -A | grep akri
 ## Configuring AKRI to Use the Discovery Handler
 
 - Modify the [AKRI Broker Configuration](broker-config.md) to use your custom discovery handler. This guide provides details on how to specify the name of your device handler and any necessary parameters. In addtion, it allows you to apply the updated AKRI Configuration to your cluster.
+
+## Deploy [Akri](https://docs.akri.sh/) HTTP Broker and Discovery Handler via a script
+
+- `ACR_NAME` needs to be set to your existing Azure Container registry
+```bash
+export ACR_NAME="<update this>" # Existing Azure Container registry
+```
+- Build and push the [discovery handler](#build-the-discovery-handler) and broker.
+- Execute the deployment script
+
+```bash
+   cd infra/scripts
+   ./deploy-akri-config.sh
+```
 
 ## Troubleshooting
 
