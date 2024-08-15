@@ -129,6 +129,13 @@ export ACR_NAME="<update this>" # Existing Azure Container registry
    cd infra/scripts
    ./deploy-akri-config.sh
 ```
+## Clean Up Resources
+- To remove your http device broker and installation of OSS AKRI:
+```bash
+   cd infra/scripts
+   ./delete-akri.sh
+```
+
 
 ## Troubleshooting
 

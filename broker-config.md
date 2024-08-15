@@ -199,7 +199,7 @@ If there are additional configuration files in the repository, describe their pu
 2. If providing a [JSON Schema](#json-schema-example) for validation, please include it in the `/infra/akri/deploy/` folder.
 3. Refer to the steps for [Applying the Configuration](#applying-the-configuration)
 
-# Build the http broker
+## Build the http broker
 ```bash
 cd src/http-broker
 docker build -t http-broker .
